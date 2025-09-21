@@ -32,7 +32,7 @@ The platform will be designed to detect the force and position of multiple simul
 
 ## 3. 🏗️ Project Outline
 
-The platform consists of three load cells ($s_{i}$) placed at strategic points on a base. Each cell is connected to an HX711 module, which amplifies and digitizes the signal. An ESP32 microcontroller reads these values, applies filters, and calculates the Center of Pressure (CoP) to estimate the object's position. Finally, the data is sent to a web server that presents it on a visual interface, showing the trajectory and detected gestures.
+The platform consists of three load cells ($s_{i}$) placed at strategic points on a base. Each cell is connected to an HX711 module, which amplifies and digitizes the signal. An --------- microcontroller reads these values, applies filters, and calculates the Center of Pressure (CoP) to estimate the object's position. Finally, the data is sent to a web server that presents it on a visual interface, showing the trajectory and detected gestures.
 
 
 *Figure 1: Project Outline*
@@ -42,7 +42,7 @@ The platform consists of three load cells ($s_{i}$) placed at strategic points o
 ## 4. 🛠️ Component Identification
 
 #### 4.1. Hardware
-The main hardware includes **three load cells**, which convert force into an electrical signal. Each is connected to an **HX711 module**, a 24-bit analog-to-digital converter. The brain of the system is an **ESP32** microcontroller or similar.
+The main hardware includes **three load cells**, which convert force into an electrical signal. Each is connected to an **HX711 module**, a 24-bit analog-to-digital converter. The brain of the system is an **----------** microcontroller or similar.
 
 #### 4.2. Power Supply
 -   The load cells and HX711 modules are powered by a regulated 5V supply (max consumption 50mA).
