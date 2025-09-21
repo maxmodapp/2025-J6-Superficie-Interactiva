@@ -1,5 +1,5 @@
 # 🤖 Project Plan J6: Multi-Touch Platform with Load Cells
-(README under construction)
+(README under construction, it have the "Plan de Poryecto Info")
 ### 👨‍💻 Development Team
 - Dappiano, Máximo - [03210/8]
 - Restucha, Tiago - [03398/7]
