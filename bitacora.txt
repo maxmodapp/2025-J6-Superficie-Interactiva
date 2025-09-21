@@ -1,0 +1,16 @@
+# Descripción breve de la actividad
+Se implementó la primera versión de la bitácora para el proyecto.
+
+| Fecha      | Hora   | Autor       | Actividad                        | Estado      | Notas / Comentarios                                                              |
+|------------|--------|-------------|----------------------------------|-------------|----------------------------------------------------------------------------------|
+| 2025-09-21 | 14:00  | Ignacio S.  | Creación de la bitácora inicial  | Completado  | Archivo de texto generado correctamente.                                         |
+
+
+
+
+# Descripción breve de la actividad
+Se esta creando un esquema en Proteus V8, con las conecciones correspondientes.
+
+| Fecha      | Hora   | Autor       | Actividad                        | Estado      | Notas / Comentarios                                                              |
+|------------|--------|-------------|----------------------------------|-------------|----------------------------------------------------------------------------------|
+| 2025-09-21 | 14:17  | Ignacio S.  | Creación esquema conexiones      | En Proceso  | N/a                                                                              |
