@@ -69,7 +69,7 @@ In November, the installation of the three load cells will be completed, and the
 
 ## 6. 🎥 Video Documentation
 
--   **Video Link:** [https://youtu.be/zXKOUtsUDJQ?si=m1zD4kVni7211JJD](https://youtu.be/zXKOUtsUDJQ?si=m1zD4kVni7211JJD)
+-   **Video Link:** [)
 
 ***
 
@@ -86,9 +86,3 @@ This project offers a valuable opportunity to explore low-cost tactile interface
 3.  **SparkFun Electronics.** (2017). *HX711 Datasheet*. Retrieved from https://cdn.sparkfun.com/datasheets/Sensors/ForceFlex/hx711_english.pdf
 4.  **SparkFun Electronics.** (2017). *Load cell amplifier HX711 breakout hookup guide*. Retrieved from https://learn.sparkfun.com/tutorials/load-cell-amplifier-hx711-breakout-hookup-guide
 
-## 📚 References
-
-1.  **Media Lab, MIT.** (n.d.). *SCALE*. [cite_start]Retrieved from https://tangible.media.mit.edu/project/scale/ [cite: 103]
-2.  **Dwyer Omega.** (n.d.). *What is a Load Cell?*. [cite_start]Retrieved from https://www.dwyeromega.com/en-us/resources/load-cells [cite: 104]
-3.  **SparkFun Electronics.** (2017). *HX711 Datasheet*. [cite_start]Retrieved from https://cdn.sparkfun.com/datasheets/Sensors/ForceFlex/hx711_english.pdf [cite: 105]
-4.  **SparkFun Electronics.** (2017). *Load cell amplifier HX711 breakout hookup guide*. [cite_start]Retrieved from https://learn.sparkfun.com/tutorials/load-cell-amplifier-hx711-breakout-hookup-guide [cite: 106]
