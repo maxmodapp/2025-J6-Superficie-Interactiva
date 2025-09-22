@@ -15,6 +15,7 @@ Se esta creando un esquema en Proteus V8, con las conecciones correspondientes.
 |------------|--------|-------------|----------------------------------|-------------|--------------------------------------------------------------------------------------|
 | 2025-09-21 | 14:17  | Ignacio S.  | Creación esquema conexiones      | En Proceso  | N/a                                                                                  |
 | 2025-09-21 | 15:37  | Ignacio S.  | Creación esquema conexiones      | En Proceso  | Problematica....No existe celda de carga en Proteus ni procesador, revisar conexiones|
+| 2025-09-22 | 18:33  | Todos (Ds)  | Creación esquema conexiones      | Finalizado  |                                                                                      |
 
 
 
