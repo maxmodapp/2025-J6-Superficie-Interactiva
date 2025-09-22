@@ -26,3 +26,10 @@ Se creo un prottotipo de readme, cuando se avance con el proyecto se editara par
 | Fecha      | Hora   | Autor       | Actividad                        | Estado      | Notas / Comentarios                                                                  |
 |------------|--------|-------------|----------------------------------|-------------|--------------------------------------------------------------------------------------|
 | 2025-09-21 | 16:33  | Ignacio S.  | Creación Readme a partir Plan Pr.| En Proceso  | N/a                                                                                  |
+
+
+# Descripción breve de la actividad
+En https://github.com/TiagoRestucha/2025-J6-Superficie-Interactiva/blob/master/Bitacora/Dispositivos%20J6.jpg?raw=true
+| Fecha      | Hora   | Autor       | Actividad                        | Estado      |                                     Notas / Comentarios                                                 |
+|------------|--------|-------------|----------------------------------|-------------|---------------------------------------------------------------------------------------------------------|
+| 2025-09-21 | 21:57  | Tiago R.    |    Imagen de Componentes         | Completado  |Se agrega evidencia de la entrega de los componentes para el desarrollo de la plataforma "Dispoitivos J6"|
