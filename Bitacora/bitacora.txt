@@ -3,7 +3,7 @@ Se implementó la primera versión de la bitácora para el proyecto.
 
 | Fecha      | Hora   | Autor       | Actividad                        | Estado      | Notas / Comentarios                                                              |
 |------------|--------|-------------|----------------------------------|-------------|----------------------------------------------------------------------------------|
-| 2025-09-21 | 14:00  | Ignacio S.  | Creación de la bitácora inicial  | Completado  | Archivo de texto generado correctamente.                                         |
+| 2025-09-21 | 14:00  | Ignacio S.  | Creación de la bitácora inicial  | Finalizado  | Archivo de texto generado correctamente.                                         |
 
 
 
@@ -15,7 +15,7 @@ Se esta creando un esquema en Proteus V8, con las conecciones correspondientes.
 |------------|--------|-------------|----------------------------------|-------------|--------------------------------------------------------------------------------------|
 | 2025-09-21 | 14:17  | Ignacio S.  | Creación esquema conexiones      | En Proceso  | N/a                                                                                  |
 | 2025-09-21 | 15:37  | Ignacio S.  | Creación esquema conexiones      | En Proceso  | Problematica....No existe celda de carga en Proteus ni procesador, revisar conexiones|
-| 2025-09-22 | 18:33  | Todos (Ds)  | Creación esquema conexiones      | Finalizado  |                                                                                      |
+| 2025-09-22 | 18:33  | Todos (DS)  | Creación esquema conexiones      | Finalizado  |                                                                                      |
 
 
 
@@ -31,6 +31,16 @@ Se creo un prottotipo de readme, cuando se avance con el proyecto se editara par
 
 # Descripción breve de la actividad
 En https://github.com/TiagoRestucha/2025-J6-Superficie-Interactiva/blob/master/Bitacora/Dispositivos%20J6.jpg?raw=true
-| Fecha      | Hora   | Autor       | Actividad                        | Estado      |                                     Notas / Comentarios                                                 |
-|------------|--------|-------------|----------------------------------|-------------|---------------------------------------------------------------------------------------------------------|
-| 2025-09-21 | 21:57  | Tiago R.    |    Imagen de Componentes         | Completado  |Se agrega evidencia de la entrega de los componentes para el desarrollo de la plataforma "Dispoitivos J6"|
+| Fecha      | Hora   | Autor       | Actividad            | Estado      |Notas / Comentarios                                                                       |
+|------------|--------|-------------|----------------------|-------------!------------------------------------------------------------------------------------------|
+| 2025-09-21 | 21:57  | Tiago R.    |Imagen de Componentes | Completado  |Se agrega evidencia de la entrega de los componentes para Ael proyecto "Dispoitivos J6"   |
+
+
+
+# Descripción breve de la actividad
+Se creo un diseno 3D de la estructura
+
+| Fecha      | Hora   | Autor       | Actividad                        | Estado      | Notas / Comentarios                                                                  |
+|------------|--------|-------------|----------------------------------|-------------|--------------------------------------------------------------------------------------|
+| 2025-09-28 | 10:55  | Ignacio S.  | Diseno Solidworks. Incio         | En Proceso  | N/a                                      !
+| 2025-09-28 | 16:55  | Ignacio S.  | Diseno Solidworks. Fin, mando STL| Finalizado  | En espera de la impresion 3D para poder contnuar                                     !
