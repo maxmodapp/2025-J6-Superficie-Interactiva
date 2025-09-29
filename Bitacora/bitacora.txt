@@ -33,7 +33,7 @@ Se creo un prottotipo de readme, cuando se avance con el proyecto se editara par
 En https://github.com/TiagoRestucha/2025-J6-Superficie-Interactiva/blob/master/Bitacora/Dispositivos%20J6.jpg?raw=true
 | Fecha      | Hora   | Autor       | Actividad            | Estado      |Notas / Comentarios                                                                       |
 |------------|--------|-------------|----------------------|-------------!------------------------------------------------------------------------------------------|
-| 2025-09-21 | 21:57  | Tiago R.    |Imagen de Componentes | Completado  |Se agrega evidencia de la entrega de los componentes para Ael proyecto "Dispoitivos J6"   |
+| 2025-09-21 | 21:57  | Tiago R.    |Imagen de Componentes | Completado  |Se agrega evidencia de la entrega de los componentes para el proyecto "Dispoitivos J6"    |
 
 
 
@@ -44,3 +44,19 @@ Se creo un diseno 3D de la estructura
 |------------|--------|-------------|----------------------------------|-------------|--------------------------------------------------------------------------------------|
 | 2025-09-28 | 10:55  | Ignacio S.  | Diseno Solidworks. Incio         | En Proceso  | N/a                                      !
 | 2025-09-28 | 16:55  | Ignacio S.  | Diseno Solidworks. Fin, mando STL| Finalizado  | En espera de la impresion 3D para poder contnuar                                     !
+
+# Descripción breve de la actividad
+Evidencia
+| Fecha      | Hora   | Autor       | Actividad            | Estado      |Notas / Comentarios                                                                         |
+|------------|--------|-------------|----------------------|-------------!--------------------------------------------------------------------------------------------|
+| 2025-09-28 | 17:20  | Tiago R.    |Imagen de Componentes | Completado  |Se agrega evidencia de la entrega del resto de los componetes en particular, 3 galgas de 1kg|
+| 2025-09-28 | 17:20  | Todos       |Soldar conexiones     | En Proceso  | Acudir al ATEI para soldar las 3 galgas de 1kg a sus respectivos hx711                     |
+
+# Descripción breve de la actividad
+primer codigo de prueba
+| Fecha      | Hora   | Autor       | Actividad            | Estado      |Notas / Comentarios                                                                         |
+|------------|--------|-------------|----------------------|-------------!--------------------------------------------------------------------------------------------|
+| Fecha      | Hora   | Autor       | Actividad            | Estado      |Notas / Comentarios                                                                         |
+| 2025-09-28 | 17:20  | Todos       | Codigo de test       | En Proceso  |n/a                                                                                         |
+| 2025-09-28 | 17:38  | Todos       | Codigo de test       | Completado  |Se agrego el codigo de prueba y se verifico el correcto funcionamiento de todos los componen|
+|            |        |             |                      |             |tes menos las 3 galgas de 1kg ya que deben ser soldadas a los HX711                         |
