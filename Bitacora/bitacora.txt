@@ -1,9 +1,20 @@
 # Descripción breve de la actividad
-Se implementó la primera versión de la bitácora para el proyecto.
+Armado de documentacion.
 
 | Fecha      | Hora   | Autor       | Actividad                        | Estado      | Notas / Comentarios                                                              |
 |------------|--------|-------------|----------------------------------|-------------|----------------------------------------------------------------------------------|
-| 2025-09-21 | 14:00  | Ignacio S.  | Creación de la bitácora inicial  | Finalizado  | Archivo de texto generado correctamente.                                         |
+| 2025-09-21 | 14:00  | Todos       | Primera entrega                  | Finalizado  | N/A                                                                              |
+| 2025-10-11 | 16:00  | Todos       | Informe de Avance Octubre        | Finalizado  | N/A                                                                              |
+
+
+
+
+# Descripción breve de la actividad
+Se creo un prototipo de readme en Ingles, cuando se avance con el proyecto se editara para que sea consistente (Ej el modulo de carga que no es SP32 y se cambo por otro)
+
+| Fecha      | Hora   | Autor       | Actividad                        | Estado      | Notas / Comentarios                                                                  |
+|------------|--------|-------------|----------------------------------|-------------|--------------------------------------------------------------------------------------|
+| 2025-09-21 | 16:33  | Ignacio S.  | Creación Readme a partir Plan Pr.| En Proceso  | N/a                                                                                  |
 
 
 
@@ -22,40 +33,39 @@ Se esta creando un esquema en Proteus V8, con las conecciones correspondientes.
 
 
 # Descripción breve de la actividad
-Se creo un prottotipo de readme, cuando se avance con el proyecto se editara para que sea consistente (Ej el modulo de carga que no es SP32 y se cambo por otro)
+Diseño estructural
 
 | Fecha      | Hora   | Autor       | Actividad                        | Estado      | Notas / Comentarios                                                                  |
 |------------|--------|-------------|----------------------------------|-------------|--------------------------------------------------------------------------------------|
-| 2025-09-21 | 16:33  | Ignacio S.  | Creación Readme a partir Plan Pr.| En Proceso  | N/a                                                                                  |
-
-
-# Descripción breve de la actividad
-En https://github.com/TiagoRestucha/2025-J6-Superficie-Interactiva/blob/master/Bitacora/Dispositivos%20J6.jpg?raw=true
-| Fecha      | Hora   | Autor       | Actividad            | Estado      |Notas / Comentarios                                                                       |
-|------------|--------|-------------|----------------------|-------------!------------------------------------------------------------------------------------------|
-| 2025-09-21 | 21:57  | Tiago R.    |Imagen de Componentes | Completado  |Se agrega evidencia de la entrega de los componentes para el proyecto "Dispoitivos J6"    |
-
-
-
-# Descripción breve de la actividad
-Se creo un diseno 3D de la estructura
-
-| Fecha      | Hora   | Autor       | Actividad                        | Estado      | Notas / Comentarios                                                                  |
-|------------|--------|-------------|----------------------------------|-------------|--------------------------------------------------------------------------------------|
-| 2025-09-28 | 10:55  | Ignacio S.  | Diseno Solidworks. Incio         | En Proceso  | N/a                                      !
+| 2025-09-28 | 10:55  | Ignacio S.  | Diseno Solidworks. Incio         | En Proceso  | N/a                                                                                  !
 | 2025-09-28 | 16:55  | Ignacio S.  | Diseno Solidworks. Fin, mando STL| Finalizado  | En espera de la impresion 3D para poder contnuar                                     !
+| 2025-10-01 | 12:00  | Ignacio S.  |Impresion 3D bajo cargo personal  | Finalizado  |                                                                                      !
+| 2025-10-07 | 13:00  | Tiago R. .  |Ensamblaje del prototipo          | Finalizado  |                                                                                      !
+
+
 
 # Descripción breve de la actividad
 Evidencia
 | Fecha      | Hora   | Autor       | Actividad            | Estado      |Notas / Comentarios                                                                         |
 |------------|--------|-------------|----------------------|-------------!--------------------------------------------------------------------------------------------|
+| 2025-09-21 | 21:57  | Tiago R.    |Imagen de Componentes | Completado  |Se agrega evidencia de la entrega de los componentes para el proyecto "Dispoitivos J6"    |
 | 2025-09-28 | 17:20  | Tiago R.    |Imagen de Componentes | Completado  |Se agrega evidencia de la entrega del resto de los componetes en particular, 3 galgas de 1kg|
-| 2025-09-28 | 17:20  | Todos       |Soldar conexiones     | En Proceso  | Acudir al ATEI para soldar las 3 galgas de 1kg a sus respectivos hx711                     |
+| 2025-09-28 | 17:20  | Todos       |Soldar conexiones     | Completado  | Acudir al ATEI para soldar las 3 galgas de 1kg a sus respectivos hx711                     |
+| 2025-09-28 | 19:00  | Todos       |Devolucion galga 20kg | Completado  | Se devolivo la Galga de 20kg                                                               |
+
+
 
 # Descripción breve de la actividad
-primer codigo de prueba
+Primer codigo de prueba
 | Fecha      | Hora   | Autor       | Actividad            | Estado      |Notas / Comentarios                                                                         |
 |------------|--------|-------------|----------------------|-------------!--------------------------------------------------------------------------------------------|
 | 2025-09-28 | 17:20  | Todos       | Codigo de test       | En Proceso  |n/a                                                                                         |
 | 2025-09-28 | 17:38  | Todos       | Codigo de test       | Completado  |Se agrego el codigo de prueba y se verifico el correcto funcionamiento de todos los componen|
 |            |        |             |                      |             |tes menos las 3 galgas de 1kg ya que deben ser soldadas a los HX711                         |
+
+
+
+# Descripción breve de la actividad
+Primer codigo de prueba
+| Fecha      | Hora   | Autor       | Actividad            | Estado      |Notas / Comentarios                                                                         |
+|------------|--------|-------------|----------------------|-------------!--------------------------------------------------------------------------------------------|
