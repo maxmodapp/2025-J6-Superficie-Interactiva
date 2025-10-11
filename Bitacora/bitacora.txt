@@ -56,7 +56,6 @@ Evidencia
 primer codigo de prueba
 | Fecha      | Hora   | Autor       | Actividad            | Estado      |Notas / Comentarios                                                                         |
 |------------|--------|-------------|----------------------|-------------!--------------------------------------------------------------------------------------------|
-| Fecha      | Hora   | Autor       | Actividad            | Estado      |Notas / Comentarios                                                                         |
 | 2025-09-28 | 17:20  | Todos       | Codigo de test       | En Proceso  |n/a                                                                                         |
 | 2025-09-28 | 17:38  | Todos       | Codigo de test       | Completado  |Se agrego el codigo de prueba y se verifico el correcto funcionamiento de todos los componen|
 |            |        |             |                      |             |tes menos las 3 galgas de 1kg ya que deben ser soldadas a los HX711                         |
