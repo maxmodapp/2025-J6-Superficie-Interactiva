@@ -67,5 +67,7 @@ Primer codigo de prueba
 
 # Descripción breve de la actividad
 Primer codigo de prueba
-| Fecha      | Hora   | Autor       | Actividad            | Estado      |Notas / Comentarios                                                                         |
-|------------|--------|-------------|----------------------|-------------!--------------------------------------------------------------------------------------------|
+| Fecha      | Hora   | Autor       | Actividad            | Estado      |Notas / Comentarios                                                                                                          |
+|------------|--------|-------------|----------------------|-------------!-----------------------------------------------------------------------------------------------------------------------------|
+| 2025-10-11 | 19:35  | maximo D.   | Aplicacion Web       | Completado  | se ralizo la aplicacion web en react para la cual se testeo mediante un codigo de test el esp que mandaba puntos aleatorios |                                                                                   
+
