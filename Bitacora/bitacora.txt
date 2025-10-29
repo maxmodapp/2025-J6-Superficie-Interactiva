@@ -67,5 +67,7 @@ Primer codigo de prueba
 
 # Descripción breve de la actividad
 Primer codigo de prueba
-| Fecha      | Hora   | Autor       | Actividad            | Estado      |Notas / Comentarios                                                                         |
-|------------|--------|-------------|----------------------|-------------!--------------------------------------------------------------------------------------------|
+| Fecha      | Hora   | Autor       | Actividad                   | Estado      |Notas / Comentarios    
+|------------|--------|-------------|-----------------------------|-------------!--------------------------------------------------------------------------------------------|
+| 2025-10-22 |16:30   |Maximo. D    |coddigo test conexion esp8266| finaliado   |falta modularizar|
+
