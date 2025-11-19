@@ -1,0 +1,1 @@
+Se devolvieron los 3 Hx quemados y la fuente con el regulador que tiraba 16V, se pidio una nueva fuente sin regulador de 5v
