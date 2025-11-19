@@ -1,0 +1,146 @@
+//https://wokwi.com/projects/448077146949437441
+
+#include "HX711.h"
+#include <math.h>
+
+// ==========================================
+// CONFIGURACIÓN DE PINES
+// ==========================================
+const int DOUT_1 = 23; const int SCK_1 = 22;
+const int DOUT_2 = 21; const int SCK_2 = 19;
+const int DOUT_3 = 17; const int SCK_3 = 16;
+
+// ==========================================
+// GEOMETRÍA FÍSICA EXACTA (Igual al Simulador)
+// ==========================================
+// Configura esto IGUAL que en tu web:
+const float DIAMETRO_ACTIVO_CM = 14.0; // "Activo" en la web
+const float DIAMETRO_BASE_CM   = 18.0; // "Base" en la web
+const float LARGO_CELDA_CM     = 8.0;  // Largo estándar de celda
+
+struct Punto { float x; float y; };
+Punto posS1, posS2, posS3;
+
+// ==========================================
+// OBJETOS
+// ==========================================
+HX711 scale1, scale2, scale3;
+
+// Factores de calibración (Ajustar con peso conocido)
+float calFactor1 = 0.42; 
+float calFactor2 = 0.42;
+float calFactor3 = 0.42;
+
+void setup() {
+  Serial.begin(115200);
+  Serial.println("--- INICIANDO BALANZA DELTA (Geometria Exacta) ---");
+
+  // ---------------------------------------------------------
+  // 1. CÁLCULO MATEMÁTICO DE POSICIONES (Réplica del JS)
+  // ---------------------------------------------------------
+  float r_in = DIAMETRO_ACTIVO_CM / 2.0;
+  float r_out = DIAMETRO_BASE_CM / 2.0;
+  float L = LARGO_CELDA_CM;
+
+  // Fórmula de intersección de círculos para encontrar el punto de apoyo
+  // Calculamos primero para el Sensor 1 (El de abajo horizontal)
+  // En la simulación, el sensor no está centrado en X=0, está desplazado.
+  
+  float x_local = (pow(r_in, 2) + pow(L, 2) - pow(r_out, 2)) / (2 * L);
+  float y_sq = pow(r_in, 2) - pow(x_local, 2);
+  
+  if (y_sq < 0) {
+    Serial.println("ERROR GEOMETRICO: Dimensiones imposibles.");
+    while(1);
+  }
+  
+  // Coordenadas del Punto Activo del Sensor 1 (Base abajo)
+  // En la simulación S1 tiene el activo a la derecha del eje Y central
+  float s1_x = x_local; 
+  float s1_y = -sqrt(y_sq); // Y negativo porque está abajo
+
+  Serial.print("Punto Activo S1 calculado: ");
+  Serial.print(s1_x); Serial.print(", "); Serial.println(s1_y);
+
+  // Asignamos S1
+  posS1 = {s1_x, s1_y};
+
+  // Calculamos S2 y S3 rotando S1 120 y 240 grados
+  // Función de rotación: 
+  // x' = x*cos(a) - y*sin(a)
+  // y' = x*sin(a) + y*cos(a)
+  
+  float rad120 = 120.0 * PI / 180.0;
+  float rad240 = 240.0 * PI / 180.0;
+
+  // S2 (Rotado 120°)
+  posS2.x = posS1.x * cos(rad120) - posS1.y * sin(rad120);
+  posS2.y = posS1.x * sin(rad120) + posS1.y * cos(rad120);
+
+  // S3 (Rotado 240°)
+  posS3.x = posS1.x * cos(rad240) - posS1.y * sin(rad240);
+  posS3.y = posS1.x * sin(rad240) + posS1.y * cos(rad240);
+
+  // ---------------------------------------------------------
+
+  scale1.begin(DOUT_1, SCK_1); scale1.set_scale(calFactor1);
+  scale2.begin(DOUT_2, SCK_2); scale2.set_scale(calFactor2);
+  scale3.begin(DOUT_3, SCK_3); scale3.set_scale(calFactor3);
+
+  Serial.println("Tarando... Vacíe el plato.");
+  scale1.tare(); scale2.tare(); scale3.tare();
+  Serial.println("Listo.");
+}
+
+float areaTriangulo(float x1, float y1, float x2, float y2, float x3, float y3) {
+   return abs((x1*(y2-y3) + x2*(y3-y1) + x3*(y1-y2))/2.0);
+}
+
+void loop() {
+  // Lecturas
+  float w1 = scale1.get_units(2);
+  float w2 = scale2.get_units(2);
+  float w3 = scale3.get_units(2);
+
+  // Filtro de ruido negativo
+  float fW1 = (w1 < 0) ? 0 : w1;
+  float fW2 = (w2 < 0) ? 0 : w2;
+  float fW3 = (w3 < 0) ? 0 : w3;
+
+  float pesoTotal = fW1 + fW2 + fW3;
+
+  // Debug crudo
+  Serial.print("S1:"); Serial.print(w1, 0);
+  Serial.print(" S2:"); Serial.print(w2, 0);
+  Serial.print(" S3:"); Serial.print(w3, 0);
+  
+  if (pesoTotal > 10) {
+    // FÓRMULA DE MOMENTOS CON GEOMETRÍA CORREGIDA
+    float posX = (fW1 * posS1.x + fW2 * posS2.x + fW3 * posS3.x) / pesoTotal;
+    float posY = (fW1 * posS1.y + fW2 * posS2.y + fW3 * posS3.y) / pesoTotal;
+
+    // Verificación de estabilidad (Coordenadas baricéntricas)
+    float areaTotal = areaTriangulo(posS1.x, posS1.y, posS2.x, posS2.y, posS3.x, posS3.y);
+    float area1 = areaTriangulo(posX, posY, posS2.x, posS2.y, posS3.x, posS3.y);
+    float area2 = areaTriangulo(posS1.x, posS1.y, posX, posY, posS3.x, posS3.y);
+    float area3 = areaTriangulo(posS1.x, posS1.y, posS2.x, posS2.y, posX, posY);
+
+    // Margen de error aumentado un poco por ruido eléctrico
+    bool esEstable = abs(areaTotal - (area1 + area2 + area3)) < 2.0;
+
+    Serial.print(" | PESO: "); Serial.print(pesoTotal, 0);
+    Serial.print(" | POS: (");
+    Serial.print(posX, 1);
+    Serial.print(", ");
+    Serial.print(posY, 1);
+    Serial.print(")");
+
+    if (!esEstable) Serial.print(" [INTERPOLANDO]");
+
+  } else {
+    Serial.print(" | [VACIO]");
+  }
+  
+  Serial.println();
+  delay(200);
+}

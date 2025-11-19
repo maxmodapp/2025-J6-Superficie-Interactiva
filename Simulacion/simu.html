@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Simulador HX711 - Geometría Delta</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Forzamos altura 100% y prevenimos scroll global */
+        html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; background-color: #121212; color: #e0e0e0; font-family: 'Segoe UI', sans-serif; }
+        
+        /* Layout Principal */
+        .app-layout { display: flex; height: 100dvh; width: 100vw; } /* 100dvh para móviles */
+        
+        /* Área del Canvas: Ocupa todo el espacio sobrante */
+        .canvas-area { 
+            flex-grow: 1; 
+            position: relative; 
+            background: #181818; 
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Panel Lateral: Ancho fijo en PC, Ajustable en móvil */
+        .controls-area { 
+            width: 350px; 
+            flex-shrink: 0;
+            background: #1e1e1e; 
+            border-left: 1px solid #333; 
+            overflow-y: auto; 
+            padding: 15px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            z-index: 10; 
+            box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+        }
+        
+        /* Responsive: En móvil (vertical), controles abajo ocupando menos espacio */
+        @media (max-width: 768px) {
+            .app-layout { flex-direction: column; }
+            .controls-area { width: 100%; height: 40%; border-left: none; border-top: 1px solid #333; padding: 10px; }
+            .canvas-area { height: 60%; width: 100%; }
+        }
+
+        canvas { 
+            /* Patrón de fondo sutil */
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            /* Sombra para dar efecto flotante */
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            border-radius: 8px;
+            cursor: crosshair;
+            touch-action: none; /* Crítico para touch */
+        }
+
+        input[type="number"] { 
+            background: #2a2a2a; border: 1px solid #444; color: white; 
+            padding: 4px; border-radius: 4px; width: 100%; font-family: monospace;
+            text-align: center; transition: border 0.2s; font-size: 14px;
+        }
+        input[type="number"]:focus { border-color: #3b82f6; outline: none; background: #333; }
+        
+        .sensor-row { display: grid; grid-template-columns: 30px 1fr 1fr 40px 1fr; gap: 6px; align-items: center; font-size: 0.8em; padding: 6px; background: rgba(255,255,255,0.03); border-radius: 6px; margin-bottom: 4px;}
+        .sensor-label { font-weight: bold; font-size: 0.9em; }
+        .flip-btn { cursor: pointer; color: #666; transition: color 0.2s; font-size: 14px; padding: 0 4px; }
+        .flip-btn:hover { color: #22d3ee; }
+
+        .btn-primary { background: #2563eb; color: white; padding: 10px; border-radius: 6px; font-weight: bold; transition: background 0.2s; text-align: center; cursor: pointer; font-size: 0.9em;}
+        .btn-primary:hover { background: #1d4ed8; }
+    </style>
+</head>
+<body>
+
+<div class="app-layout">
+    
+    <!-- ZONA GRÁFICA -->
+    <div class="canvas-area" id="canvasContainer">
+        <div class="absolute top-4 left-4 z-10 pointer-events-none">
+            <h1 class="text-xl font-bold text-gray-300 text-shadow">Balanza Delta</h1>
+        </div>
+
+        <!-- Leyenda Flotante COMPLETA Restaurada -->
+        <div class="absolute bottom-4 left-4 flex flex-wrap gap-4 text-xs bg-black/70 p-3 rounded backdrop-blur-md border border-gray-700 pointer-events-none shadow-lg">
+            <span class="flex items-center gap-2"><span class="w-3 h-3 bg-cyan-400 rounded-full shadow-[0_0_5px_#22d3ee]"></span> Base (Piso)</span>
+            <span class="flex items-center gap-2"><span class="w-3 h-3 bg-gray-400 rounded-full"></span> Activo (Plato)</span>
+            <span class="flex items-center gap-2"><span class="w-3 h-3 bg-white border-2 border-gray-600 rounded-full"></span> Peso (W)</span>
+            <span class="flex items-center gap-2"><span class="w-3 h-3 bg-green-500/50 border border-green-500 rounded-sm"></span> Zona Estable</span>
+        </div>
+
+        <canvas id="simCanvas"></canvas>
+    </div>
+
+    <!-- PANEL DE CONTROL -->
+    <div class="controls-area">
+        
+        <!-- Sección Configuración -->
+        <div class="space-y-3 border-b border-gray-700 pb-3">
+            <div class="flex justify-between items-center">
+                <h2 class="text-xs uppercase text-gray-500 font-bold tracking-wider">Geometría (Diámetros)</h2>
+                <button onclick="resetSimulation()" class="text-[10px] bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded text-white transition">Reset</button>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-[10px] text-gray-400 mb-1">Activo (cm)</label>
+                    <input type="number" id="innerDim" value="14" onchange="initDeltaExact()">
+                </div>
+                <div>
+                    <label class="block text-[10px] text-cyan-500 mb-1">Base (cm)</label>
+                    <input type="number" id="outerDim" value="18" onchange="initDeltaExact()">
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <label class="text-[10px] text-gray-400 w-16">Peso (g)</label>
+                <input type="number" id="weightVal" value="1000" class="font-bold" oninput="updateCalculation()">
+            </div>
+        </div>
+
+        <!-- Sección Sensores -->
+        <div class="space-y-1 flex-grow overflow-y-auto">
+            <div class="flex justify-between items-end mb-1 px-1">
+                <h2 class="text-xs uppercase text-gray-500 font-bold tracking-wider">Sensores</h2>
+                <span class="text-[9px] text-gray-600">X / Y / Rot / Val</span>
+            </div>
+
+            <!-- S1 -->
+            <div class="sensor-row border-l-2 border-red-500">
+                <span class="sensor-label text-red-400">S1</span>
+                <input id="s1x" type="number" onchange="updateFromInputs()">
+                <input id="s1y" type="number" onchange="updateFromInputs()">
+                <input id="s1r" type="number" class="text-yellow-500" onchange="updateFromInputs()">
+                <span id="valS1" class="font-mono font-bold text-right">0</span>
+            </div>
+
+            <!-- S2 -->
+            <div class="sensor-row border-l-2 border-green-500">
+                <span class="sensor-label text-green-400">S2</span>
+                <input id="s2x" type="number" onchange="updateFromInputs()">
+                <input id="s2y" type="number" onchange="updateFromInputs()">
+                <input id="s2r" type="number" class="text-yellow-500" onchange="updateFromInputs()">
+                <span id="valS2" class="font-mono font-bold text-right">0</span>
+            </div>
+
+            <!-- S3 -->
+            <div class="sensor-row border-l-2 border-blue-500">
+                <span class="sensor-label text-blue-400">S3</span>
+                <input id="s3x" type="number" onchange="updateFromInputs()">
+                <input id="s3y" type="number" onchange="updateFromInputs()">
+                <input id="s3r" type="number" class="text-yellow-500" onchange="updateFromInputs()">
+                <span id="valS3" class="font-mono font-bold text-right">0</span>
+            </div>
+
+            <div class="flex justify-between items-center pt-2 border-t border-gray-700 text-xs">
+                <span class="text-gray-400">Suma Total:</span>
+                <span id="valSum" class="font-bold text-white text-base">0</span>
+            </div>
+        </div>
+
+        <!-- Info Estado -->
+        <div class="bg-black/30 p-2 rounded text-[10px] font-mono text-gray-400 mt-auto">
+            <div class="flex justify-between">
+                <span>Pos X: <span id="posX" class="text-yellow-400">0.0</span></span>
+                <span>Pos Y: <span id="posY" class="text-yellow-400">0.0</span></span>
+            </div>
+            <div id="unstableWarn" class="hidden text-red-400 mt-1 font-bold flex items-center gap-1">
+                <span>⚠️</span> INESTABLE (Fuera de área)
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('simCanvas');
+    const ctx = canvas.getContext('2d');
+    const container = document.getElementById('canvasContainer');
+    
+    const LOAD_CELL_LENGTH_CM = 8.0; 
+    const HALF_LENGTH = LOAD_CELL_LENGTH_CM / 2.0; 
+    
+    let width, height, center, SCALE;
+    let R_inner = 7; // Radio interior (Activo)
+    let R_outer = 9; // Radio exterior (Base)
+
+    // --- Estado ---
+    let weight = { x: 0, y: 0 };
+    let sensors = []; 
+
+    // --- Reset ---
+    window.resetSimulation = function() {
+        document.getElementById('innerDim').value = 14;
+        document.getElementById('outerDim').value = 18;
+        document.getElementById('weightVal').value = 1000;
+        weight = { x: 0, y: 0 };
+        initDeltaExact();
+    }
+
+    // --- Cálculo Geometría Exacta ---
+    window.initDeltaExact = function() {
+        const dIn = parseFloat(document.getElementById('innerDim').value) || 14;
+        const dOut = parseFloat(document.getElementById('outerDim').value) || 18;
+        
+        R_inner = Math.abs(dIn) / 2;
+        R_outer = Math.abs(dOut) / 2;
+        const L = LOAD_CELL_LENGTH_CM;
+
+        // Cálculo S1 (Horizontal Abajo)
+        const Ax = (Math.pow(R_inner, 2) + Math.pow(L, 2) - Math.pow(R_outer, 2)) / (2 * L);
+        const ySq = Math.pow(R_inner, 2) - Math.pow(Ax, 2);
+        
+        if (ySq < 0) {
+            console.warn("Geometría imposible con celda de 8cm para estos diámetros.");
+            sensors = []; 
+            draw();
+            return; 
+        }
+        
+        const commonY = -Math.sqrt(ySq); 
+        const Bx = Ax - L; 
+        const s1Cx = (Ax + Bx) / 2;
+        const s1Cy = commonY;
+        
+        // S1: Centro calculado, Rotación 0 (Horizontal), Flip 1
+        const s1 = { x: s1Cx, y: s1Cy, rot: 0, flip: 1, color: '#f87171', label: 'S1' };
+
+        function rotatePoint(px, py, angleDeg) {
+            const rad = angleDeg * Math.PI / 180;
+            return {
+                x: px * Math.cos(rad) - py * Math.sin(rad),
+                y: px * Math.sin(rad) + py * Math.cos(rad)
+            };
+        }
+
+        // Rotar 120° y 240°
+        const p2 = rotatePoint(s1Cx, s1Cy, 120);
+        const s2 = { x: p2.x, y: p2.y, rot: 120, flip: 1, color: '#4ade80', label: 'S2' };
+
+        const p3 = rotatePoint(s1Cx, s1Cy, 240);
+        const s3 = { x: p3.x, y: p3.y, rot: 240, flip: 1, color: '#60a5fa', label: 'S3' };
+
+        sensors = [s1, s2, s3];
+        
+        updateInputsFromState();
+        resize();
+    }
+    
+    // --- Resize & Zoom ---
+    function resize() {
+        const rect = container.getBoundingClientRect();
+        width = rect.width;
+        height = rect.height;
+        
+        if(width < 10 || height < 10) {
+            requestAnimationFrame(resize);
+            return;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        center = { x: width / 2, y: height / 2 };
+        
+        // Zoom ajustado para llenar pantalla
+        const contentRadius = Math.max(R_outer, R_inner) + 2;
+        const minScreenDim = Math.min(width, height);
+        
+        SCALE = (minScreenDim / 2 * 0.90) / contentRadius;
+        if (SCALE <= 0) SCALE = 10;
+
+        draw();
+    }
+    window.addEventListener('resize', resize);
+
+    function toScreen(x, y) {
+        return { px: center.x + (x * SCALE), py: center.y - (y * SCALE) };
+    }
+    function toCartesian(px, py) {
+        return { x: (px - center.x) / SCALE, y: (center.y - py) / SCALE };
+    }
+
+    function updateInputsFromState() {
+        ['s1','s2','s3'].forEach((prefix, i) => {
+            if(sensors[i]) {
+                document.getElementById(prefix+'x').value = sensors[i].x.toFixed(2);
+                document.getElementById(prefix+'y').value = sensors[i].y.toFixed(2);
+                document.getElementById(prefix+'r').value = sensors[i].rot.toFixed(1);
+            }
+        });
+    }
+
+    window.updateFromInputs = function() {
+        ['s1','s2','s3'].forEach((prefix, i) => {
+            sensors[i].x = parseFloat(document.getElementById(prefix+'x').value) || 0;
+            sensors[i].y = parseFloat(document.getElementById(prefix+'y').value) || 0;
+            sensors[i].rot = parseFloat(document.getElementById(prefix+'r').value) || 0;
+        });
+        draw();
+        updateCalculation();
+    }
+
+    // --- Física ---
+    function getSensorPoints(s) {
+        const rad = s.rot * Math.PI / 180;
+        const dx = HALF_LENGTH; 
+        const Ax = s.x - dx * Math.cos(rad);
+        const Ay = s.y - dx * Math.sin(rad);
+        const Bx = s.x + dx * Math.cos(rad);
+        const By = s.y + dx * Math.sin(rad);
+
+        if (s.flip === 1) return { base: {x:Ax, y:Ay}, active: {x:Bx, y:By} };
+        else return { base: {x:Bx, y:By}, active: {x:Ax, y:Ay} };
+    }
+
+    function solveForces() {
+        const W = parseFloat(document.getElementById('weightVal').value) || 0;
+        const wx = weight.x;
+        const wy = weight.y;
+        if(sensors.length < 3) return [0,0,0];
+
+        const pts = sensors.map(s => getSensorPoints(s).active);
+        const x1 = pts[0].x, y1 = pts[0].y;
+        const x2 = pts[1].x, y2 = pts[1].y;
+        const x3 = pts[2].x, y3 = pts[2].y;
+
+        const D = 1*(x2*y3 - y2*x3) - 1*(x1*y3 - y1*x3) + 1*(x1*y2 - y1*x2);
+        if (Math.abs(D) < 1e-4) return [0,0,0];
+
+        const D1 = W*(x2*y3 - y2*x3) - 1*(W*wx*y3 - W*wy*x3) + 1*(W*wx*y2 - W*wy*x2);
+        const D2 = 1*(W*wx*y3 - W*wy*x3) - W*(x1*y3 - y1*x3) + 1*(x1*W*wy - y1*W*wx);
+        const D3 = 1*(x2*W*wy - y2*W*wx) - 1*(x1*W*wy - y1*W*wx) + W*(x1*y2 - y1*x2);
+
+        return [D1/D, D2/D, D3/D];
+    }
+
+    // --- Dibujo ---
+    function draw() {
+        if (!ctx || width <= 0 || height <= 0 || SCALE <= 0) return;
+        ctx.clearRect(0, 0, width, height);
+
+        const rOutPx = Math.max(0, R_outer * SCALE);
+        const rInPx = Math.max(0, R_inner * SCALE);
+
+        // 1. Triángulo Estable
+        if(sensors.length === 3) {
+            const pts = sensors.map(s => getSensorPoints(s).active);
+            const p1 = toScreen(pts[0].x, pts[0].y);
+            const p2 = toScreen(pts[1].x, pts[1].y);
+            const p3 = toScreen(pts[2].x, pts[2].y);
+
+            ctx.beginPath();
+            ctx.moveTo(p1.px, p1.py);
+            ctx.lineTo(p2.px, p2.py);
+            ctx.lineTo(p3.px, p3.py);
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(34, 197, 94, 0.1)';
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(34, 197, 94, 0.5)';
+            ctx.setLineDash([5,5]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        // 2. Anillos
+        ctx.lineWidth = 3;
+        
+        // Base
+        ctx.beginPath();
+        ctx.arc(center.x, center.y, rOutPx, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(34, 211, 238, 0.4)';
+        ctx.stroke();
+        
+        // Activo
+        ctx.beginPath();
+        ctx.arc(center.x, center.y, rInPx, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(156, 163, 175, 0.5)';
+        ctx.stroke();
+
+        ctx.lineWidth = 1;
+
+        // Ejes
+        ctx.beginPath();
+        ctx.strokeStyle = '#333';
+        ctx.moveTo(center.x, 0); ctx.lineTo(center.x, height);
+        ctx.moveTo(0, center.y); ctx.lineTo(width, center.y);
+        ctx.stroke();
+
+        // Sensores
+        sensors.forEach((s) => {
+            const p = toScreen(s.x, s.y);
+            const angleRad = -s.rot * Math.PI / 180;
+            const L = LOAD_CELL_LENGTH_CM * SCALE;
+            const H = 1.2 * SCALE;
+
+            ctx.save();
+            ctx.translate(p.px, p.py);
+            ctx.rotate(angleRad);
+
+            // Barra
+            ctx.fillStyle = '#f97316'; 
+            ctx.fillRect(-L/2, -H/2, L, H);
+            ctx.strokeStyle = '#c2410c';
+            ctx.strokeRect(-L/2, -H/2, L, H);
+
+            const bx = s.flip === 1 ? -L/2 + 4 : L/2 - 4;
+            const ax = s.flip === 1 ? L/2 - 4 : -L/2 + 4;
+
+            // Base (Cyan)
+            ctx.beginPath();
+            ctx.arc(bx, 0, 5, 0, Math.PI*2);
+            ctx.fillStyle = '#22d3ee'; 
+            ctx.fill();
+
+            // Activo (Gris)
+            ctx.beginPath();
+            ctx.arc(ax, 0, 5, 0, Math.PI*2);
+            ctx.fillStyle = '#9ca3af'; 
+            ctx.fill();
+
+            ctx.restore();
+            
+            // Etiqueta
+            ctx.fillStyle = s.color;
+            ctx.font = 'bold 12px sans-serif';
+            ctx.fillText(s.label, p.px + 10, p.py - 10);
+        });
+
+        // Peso (W)
+        const wp = toScreen(weight.x, weight.y);
+        ctx.beginPath();
+        ctx.arc(wp.px, wp.py, 10, 0, Math.PI*2);
+        ctx.fillStyle = 'white';
+        ctx.fill();
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.fillStyle = 'black';
+        ctx.font = 'bold 10px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('W', wp.px, wp.py);
+    }
+
+    function updateCalculation() {
+        const forces = solveForces();
+        document.getElementById('valS1').innerText = forces[0].toFixed(0);
+        document.getElementById('valS2').innerText = forces[1].toFixed(0);
+        document.getElementById('valS3').innerText = forces[2].toFixed(0);
+        const sum = forces[0]+forces[1]+forces[2];
+        document.getElementById('valSum').innerText = Math.round(sum);
+        document.getElementById('posX').innerText = weight.x.toFixed(1);
+        document.getElementById('posY').innerText = weight.y.toFixed(1);
+
+        // Advertencia tolerancia
+        const warn = document.getElementById('unstableWarn');
+        if (forces.some(f => f < -5)) warn.classList.remove('hidden');
+        else warn.classList.add('hidden');
+    }
+
+    // Interacción
+    let draggedItem = null;
+    function getMousePos(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: clientX - rect.left, y: clientY - rect.top };
+    }
+
+    function handleStart(e) {
+        if(e.cancelable) e.preventDefault();
+        const m = getMousePos(e);
+        const wp = toScreen(weight.x, weight.y);
+        
+        if (Math.hypot(m.x - wp.px, m.y - wp.py) < 30) {
+            draggedItem = weight;
+            return;
+        }
+        
+        // Teleport peso
+        const pos = toCartesian(m.x, m.y);
+        const limit = Math.max(R_outer, R_inner) + 4;
+        if(Math.hypot(pos.x, pos.y) <= limit) {
+            weight.x = pos.x;
+            weight.y = pos.y;
+            draggedItem = weight;
+            draw();
+            updateCalculation();
+        }
+    }
+
+    function handleMove(e) {
+        if (!draggedItem) return;
+        if(e.cancelable) e.preventDefault();
+        const m = getMousePos(e);
+        const pos = toCartesian(m.x, m.y);
+
+        if (draggedItem === weight) {
+            const limit = Math.max(R_outer, R_inner) + 8; 
+            const dist = Math.hypot(pos.x, pos.y);
+            if (dist > limit) {
+                 const angle = Math.atan2(pos.y, pos.x);
+                 pos.x = Math.cos(angle) * limit;
+                 pos.y = Math.sin(angle) * limit;
+            }
+        }
+        draggedItem.x = pos.x;
+        draggedItem.y = pos.y;
+        draw();
+        updateCalculation();
+    }
+
+    function handleEnd() { draggedItem = null; }
+
+    canvas.addEventListener('mousedown', handleStart);
+    canvas.addEventListener('mousemove', handleMove);
+    canvas.addEventListener('mouseup', handleEnd);
+    canvas.addEventListener('touchstart', handleStart, {passive:false});
+    canvas.addEventListener('touchmove', handleMove, {passive:false});
+    canvas.addEventListener('touchend', handleEnd);
+
+    // Init
+    setTimeout(() => {
+        initDeltaExact();
+        resize();
+    }, 100);
+</script>
+</body>
+</html>
