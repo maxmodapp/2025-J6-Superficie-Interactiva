@@ -5,17 +5,17 @@ Armado de documentacion.
 |------------|--------|-------------|----------------------------------|-------------|----------------------------------------------------------------------------------|
 | 2025-09-21 | 14:00  | Todos       | Primera entrega                  | Finalizado  | N/A                                                                              |
 | 2025-10-11 | 16:00  | Todos       | Informe de Avance Octubre        | Finalizado  | N/A                                                                              |
-
+| 2025-11-19 | 16:00  | Todos       | Informe de Avance Noviembre      | En Proceso  | N/A                                                                              |
 
 
 
 # Descripción breve de la actividad
-Se creo un prototipo de readme en Ingles, cuando se avance con el proyecto se editara para que sea consistente (Ej el modulo de carga que no es SP32 y se cambo por otro)
+Se creo un prototipo de readme en Ingles, cuando se avance con el proyecto se editara para que sea consistente (Ej el modulo de carga que no es ESP32 y se cambo por otro)
 
 | Fecha      | Hora   | Autor       | Actividad                        | Estado      | Notas / Comentarios                                                                  |
 |------------|--------|-------------|----------------------------------|-------------|--------------------------------------------------------------------------------------|
 | 2025-09-21 | 16:33  | Ignacio S.  | Creación Readme a partir Plan Pr.| En Proceso  | N/a                                                                                  |
-
+| 2025-11-19 |17:30   |Ignacio S.   |Actualizacion bitacora            | finaliado   |N/a                                                                                   |
 
 
 
@@ -48,11 +48,11 @@ Diseño estructural
 Evidencia
 | Fecha      | Hora   | Autor       | Actividad            | Estado      |Notas / Comentarios                                                                         |
 |------------|--------|-------------|----------------------|-------------!--------------------------------------------------------------------------------------------|
-| 2025-09-21 | 21:57  | Tiago R.    |Imagen de Componentes | Completado  |Se agrega evidencia de la entrega de los componentes para el proyecto "Dispoitivos J6"    |
+| 2025-09-21 | 21:57  | Tiago R.    |Imagen de Componentes | Completado  |Se agrega evidencia de la entrega de los componentes para el proyecto "Dispoitivos J6"      |
 | 2025-09-28 | 17:20  | Tiago R.    |Imagen de Componentes | Completado  |Se agrega evidencia de la entrega del resto de los componetes en particular, 3 galgas de 1kg|
 | 2025-09-28 | 17:20  | Todos       |Soldar conexiones     | Completado  | Acudir al ATEI para soldar las 3 galgas de 1kg a sus respectivos hx711                     |
 | 2025-09-28 | 19:00  | Todos       |Devolucion galga 20kg | Completado  | Se devolivo la Galga de 20kg                                                               |
-
+| 2025-11-06 | 19:00  | Todos       |Actualizacion de dev. | Completado  | Se devolivo la fuente defectuosa y los 3 hx, se consiguio una fuente de 5v                 |
 
 
 # Descripción breve de la actividad
@@ -69,5 +69,36 @@ Primer codigo de prueba
 Primer codigo de prueba
 | Fecha      | Hora   | Autor       | Actividad                   | Estado      |Notas / Comentarios    
 |------------|--------|-------------|-----------------------------|-------------!--------------------------------------------------------------------------------------------|
-| 2025-10-22 |16:30   |Maximo. D    |coddigo test conexion esp8266| finaliado   |falta modularizar|
+| 2025-10-22 |16:30   |Maximo. D    |coddigo test conexion esp8266| finaliado   |falta modularizar                                                                           |
+
+
+
+
+# Descripción breve de la actividad
+PROBLEMATICA BALANZA
+| Fecha      | Hora   | Autor       | Actividad                    | Estado      |Notas / Comentarios    
+|------------|--------|-------------|------------------------------|-------------!--------------------------------------------------------------------------------------------|
+| 2025-10-29 |12:30   |Todos        |Analisis de problematica      | En proceso   |No se encontro el problema, el codigo no anda                                              |
+| 2025-11-01 |10:30   |Tiago R.     |Analisis de problematica      | En proceso   |No se encontro el problema, el codigo no anda                                              |
+| 2025-11-03 |12:30   |Todos        |Analisis de problematica      |  finaliado   |Problema, fuente defectuosa                                                                |
+
+
+
+# Descripción breve de la actividad
+Simulacion de la balanza
+| Fecha      | Hora   | Autor       | Actividad                    | Estado      |Notas / Comentarios    
+|------------|--------|-------------|------------------------------|-------------!--------------------------------------------------------------------------------------------|
+| 2025-11-19 |17:30   |Ignacio S.   |Sim. func. en Esp32 verificada| finaliado   |Falta testearlo con las galgas, pero ahora sabemos con certeza que el codigo funciona       |
+
+
+
+
+
+
+# Descripción breve de la actividad
+Resoldado de componentes
+| Fecha      | Hora   | Autor       | Actividad                   | Estado      |Notas / Comentarios    
+|------------|--------|-------------|-----------------------------|-------------!--------------------------------------------------------------------------------------------|
+| ----------  |16:30   |Tiago R.    |Resoldado y veriicaion Hx    |             |                                                                                            |
+
 
