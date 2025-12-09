@@ -91,10 +91,6 @@ Simulacion de la balanza
 | 2025-11-19 |17:30   |Ignacio S.   |Sim. func. en Esp32 verificada| finaliado   |Falta testearlo con las galgas, pero ahora sabemos con certeza que el codigo funciona       |
 
 
-
-
-
-
 # Descripción breve de la actividad
 Resoldado de componentes
 | Fecha      | Hora   | Autor       | Actividad                   | Estado      |Notas / Comentarios    
@@ -102,3 +98,20 @@ Resoldado de componentes
 | ----------  |16:30   |Tiago R.    |Resoldado y veriicaion Hx    |             |                                                                                            |
 
 
+# Descripción breve de la actividad
+Resoldado de componentes
+| Fecha      | Hora   | Autor       | Actividad                   | Estado      |Notas / Comentarios    
+|------------|--------|-------------|-----------------------------|-------------!--------------------------------------------------------------------------------------------|
+| 5/12/25    |        |maximo      |sodado galgas nuevas y verificacion         |   
+
+
+
+# Descripción breve de la actividad
+armado general
+| Fecha      | Hora   | Autor       | Actividad                   | Estado      |Notas / Comentarios    
+|------------|--------|-------------|-----------------------------|-------------!--------------------------------------------------------------------------------------------|
+| 6/12/25    |        |todos        |armado final                   |           |
+| 7/12/25    |        |maximo       |codigo final separado en archivos|         |
+| 7/12/25    |        |todos        |correcion de errores           |           |
+
+fin
