@@ -75,12 +75,19 @@ To replicate this system, the following hardware configuration is used:
 | **Power Supply** | 5V 2A (MicroUSB) | System power. |
 
 ### Pinout Configuration
-Since the ESP8266 has limited GPIOs, the following mapping is used to interface with the three HX711 modules:
+The following mapping is used to interface with the three HX711 modules, utilizing specific GPIOs for Data (DT) and Clock (SCK) for each sensor:
 
-* **SCK (Clock):** Shared across all modules on **GPIO 14 (D5)**.
-* **DAT (Data) 1:** Connected to **GPIO 5 (D1)**.
-* **DAT (Data) 2:** Connected to **GPIO 4 (D2)**.
-* **DAT (Data) 3:** Connected to **GPIO 12 (D6)**.
+* **Module 1:**
+  * **DT (Data):** Connected to **GPIO 12 (D6)**.
+  * **SCK (Clock):** Connected to **GPIO 14 (D5)**.
+
+* **Module 2:**
+  * **DT (Data):** Connected to **GPIO 4 (D2)**.
+  * **SCK (Clock):** Connected to **GPIO 5 (D1)**.
+
+* **Module 3:**
+  * **DT (Data):** Connected to **GPIO 13 (D7)**.
+  * **SCK (Clock):** Connected to **GPIO 15 (D8)**.
 
 ---
 
