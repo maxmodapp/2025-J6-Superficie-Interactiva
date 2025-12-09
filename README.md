@@ -73,7 +73,7 @@ To replicate this system, the following hardware configuration is used:
 | **Load Cells** | 3x Beam Type (5kg) | Force transduction. |
 | **HX711** | 3x 24-bit ADCs | Signal amplification and digitization. |
 | **Power Supply** | 5V 2A (MicroUSB) | System power. |
-
+---
 ### Pinout Configuration
 The following mapping is used to interface with the three HX711 modules, utilizing specific GPIOs for Data (DT) and Clock (SCK) for each sensor:
 
