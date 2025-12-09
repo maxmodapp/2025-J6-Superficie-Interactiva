@@ -53,7 +53,7 @@ The system operates on a **Barycentric Coordinate** principle.
 
 The platform consists of **three load cells ($S_{1}, S_{2}, S_{3}$)** placed at strategic points (vertices) of a base. Each cell is connected to an **HX711 amplifier**, which digitizes the weight signal.
 
-The core processing unit is an **ESP8266 (NodeMCU/Wemos)** microcontroller. It performs the following tasks:
+The core processing unit is an **ESP8266** microcontroller. It performs the following tasks:
 1.  **Acquisition:** Reads raw data from the 3 ADCs.
 2.  **Filtering:** Applies moving average filters to reduce mechanical noise.
 3.  **Calculation:** Computes the Center of Pressure (CoP).
