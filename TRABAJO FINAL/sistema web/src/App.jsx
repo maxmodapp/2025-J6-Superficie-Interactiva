@@ -7,24 +7,34 @@ const WS_URL = `ws://${WS_HOST}/ws`;
 // diámetro del círculo en px
 const DIAMETER = 870;
 
-// Rangos esperados para X/Y
-const X_MIN = -4.5, X_MAX = 5.45;
-const Y_MIN = -5.2, Y_MAX = 5;
+// rangos esperados para X/Y
+const X_MIN = -5.5, X_MAX = 5.5;
+const Y_MIN = -5.5, Y_MAX = 5.5;
+//const X_MIN = -4.6, X_MAX = 5.3;
+//const Y_MIN = -3.3, Y_MAX = 6.6;
 
-// Rangos remapeados
+//rangos remapeados
 const DISP_X_MIN = -9.5,  DISP_X_MAX = 9.5;
 const DISP_Y_MIN = -9.5,  DISP_Y_MAX = 9.5;
 
 
-//Rastro
+//rastro
 const TRAIL_MS = 1000;   //duración visible del rastro
 const TRAIL_MAX = 20;   //tope de puntos guardados
 
-//Peso
+//peso
 const WEIGHT_UNIT = "g";
 const WEIGHT_DECIMALS = 2;
 
-//Estilos
+//peso máximo considerado para push
+const MAX_VIS_WEIGHT = 400;   
+
+//tamaños del punto según peso
+const MIN_DOT_RADIUS = 8;      // radio con peso 0
+const MAX_DOT_RADIUS = 40;     // radio con peso >= MAX_VIS_WEIGHT
+
+
+//estilos
 const styles = {
   page: {
     fontFamily: "Inter, system-ui, Avenir, Helvetica, Arial, sans-serif",
@@ -99,7 +109,36 @@ function clampToCircle(x, y, r) {
   return { x: x * k, y: y * k };
 }
 
-//convierte {x,y} (sistema) -> {x,y} en pixeles dentro del círculo
+function clamp01(x) {
+  if (x < 0) return 0;
+  if (x > 1) return 1;
+  return x;
+}
+
+//dado un peso w, devuelve radio y color
+function weightToVisual(w) {
+  if (typeof w !== "number" || isNaN(w)) {
+    return {
+      radius: (MIN_DOT_RADIUS + MAX_DOT_RADIUS) / 2,
+      color: "#111827", //gris oscuro por defecto
+    };
+  }
+
+  //normalizamos
+  const t = clamp01(w / MAX_VIS_WEIGHT);
+
+  //interpolamos radio
+  const radius = MIN_DOT_RADIUS + (MAX_DOT_RADIUS - MIN_DOT_RADIUS) * t;
+
+  //color: de casi negro a rojo intenso
+  //arrancamos en un gris muy oscuro (20) para que algo se vea
+  const red = Math.round(20 + 235 * t); // 20..255
+  const color = `rgb(${red}, 0, 0)`;    // más peso → más rojo
+
+  return { radius, color };
+}
+
+//convierte (x,y) sistema -> (x,y) en pixeles dentro del círculo
 function toPixel(pos, geom) {
   const { r, cx, cy } = geom;
   const nx = normalize(pos.x, X_MIN, X_MAX, true);
@@ -137,7 +176,7 @@ export default function App() {
             const next = { x: msg.x, y: msg.y, w: msg.w };
             setPos(next);
 
-            // Actualizar rastro (por tiempo y cantidad)
+            //actualizar rastro (por tiempo y cantidad)
             const now = Date.now();
             setTrail((prev) => {
               const pruned = prev.filter(p => now - p.ts <= TRAIL_MS);
@@ -168,7 +207,19 @@ export default function App() {
     };
   }, []);
 
-  // Posición remapeada para mostrar en el panel
+// Visual del punto actual según el peso
+const dotVisual = useMemo(() => {
+  if (!pos) {
+    return {
+      radius: (MIN_DOT_RADIUS + MAX_DOT_RADIUS) / 2,
+      color: "#111827",
+    };
+  }
+  return weightToVisual(pos.w);
+}, [pos]);
+
+
+  //posición remapeada para mostrar en el panel
 const displayPos = useMemo(() => {
   if (!pos) return null;
   return {
@@ -178,13 +229,13 @@ const displayPos = useMemo(() => {
   };
 }, [pos]);
 
-  // Geometria del circulo
+  //geometria del circulo
   const geom = useMemo(() => {
     const r = DIAMETER / 2;
     return { r, cx: r, cy: r };
   }, []);
 
-  // Pixeles actuales y del rastro
+  //pixeles actuales y del rastro
   const pixel = useMemo(() => (pos ? toPixel(pos, geom) : null), [pos, geom]);
   const trailPixels = useMemo(
     () => trail.map(p => ({ ...toPixel(p, geom), ts: p.ts })),
@@ -227,7 +278,7 @@ const displayPos = useMemo(() => {
         </div>
       </aside>
 
-      {/* CÍRCULO */}
+      {/* CIRCULO */}
       <main style={{ ...styles.panel, display: "flex", flexDirection: "column", gap: 12 }}>
         <h2 style={styles.titleAbs}>Base circular (posición X,Y)</h2>
         <div style={styles.circleWrap}>
@@ -238,11 +289,11 @@ const displayPos = useMemo(() => {
             <line x1={geom.cx - geom.r} y1={geom.cy} x2={geom.cx + geom.r} y2={geom.cy} stroke="#818181ff" strokeDasharray="6 6" />
             <line x1={geom.cx} y1={geom.cy - geom.r} x2={geom.cx} y2={geom.cy + geom.r} stroke="#818181ff" strokeDasharray="6 6" />
 
-            {/* Rastro (segmentos + puntos con opacidad según antigüedad) */}
+            {/* Rastro*/}
             {trailPixels.length > 1 && trailPixels.map((p, i) => {
               if (i === 0) return null;
               const prev = trailPixels[i - 1];
-              const age = Math.max(0, Math.min(1, (Date.now() - p.ts) / TRAIL_MS)); // 0..1
+              const age = Math.max(0, Math.min(1, (Date.now() - p.ts) / TRAIL_MS));
               const alpha = 1 - age; 
               return (
                 <g key={`seg-${i}`}>
@@ -252,10 +303,11 @@ const displayPos = useMemo(() => {
               );
             })}
 
-            {/* Punto actual + guías */}
+            {/* Punto actual y guias */}
             {pixel && (
               <>
-                <circle cx={pixel.x} cy={pixel.y} r={10} fill="#111827" />
+                 {/* Punto a mostrar */}
+                <circle cx={pixel.x} cy={pixel.y} r={dotVisual.radius} fill={dotVisual.color} />
                 <line x1={pixel.x} y1={geom.cy - geom.r} x2={pixel.x} y2={geom.cy + geom.r} stroke="#9ca3af" strokeOpacity={0.35} />
                 <line x1={geom.cx - geom.r} y1={pixel.y} x2={geom.cx + geom.r} y2={pixel.y} stroke="#9ca3af" strokeOpacity={0.35} />
               </>
