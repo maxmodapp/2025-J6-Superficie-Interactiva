@@ -69,7 +69,7 @@ To replicate this system, the following hardware configuration is used:
 
 | Component | Description | Function |
 | :--- | :--- | :--- |
-| **ESP8266 (NodeMCU)** | 32-bit MCU, 80MHz, Wi-Fi | Central processing and Web Server. |
+| **ESP8266** | 32-bit MCU, 80MHz, Wi-Fi | Central processing and Web Server. |
 | **Load Cells** | 3x Beam Type (5kg) | Force transduction. |
 | **HX711** | 3x 24-bit ADCs | Signal amplification and digitization. |
 | **Power Supply** | 5V 2A (MicroUSB) | System power. |
